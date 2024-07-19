@@ -7,13 +7,9 @@ A cross-platform mobile application developed using Flutter that allows users to
 1. **UI Design:**
    - Use Flutter's Material Design widgets for a cohesive look.
    - Implement a home screen with a list of books.
-     ![Home Screen](assets/screenshots/home_screen.png)
    - Create screens for adding/editing book details.
-     ![Add/Edit Screen](assets/screenshots/add_edit_screen.png)
    - Design a book detail view.
-     ![Book Detail View](assets/screenshots/book_detail_view.png)
    - Implement a settings screen.
-     ![Settings Screen](assets/screenshots/settings_screen.png)
 
 2. **Data Persistence (SharedPreferences):**
    - Use `shared_preferences` package to store user preferences.
@@ -34,6 +30,29 @@ A cross-platform mobile application developed using Flutter that allows users to
    - Sort books based on different criteria.
    - Search functionality.
    - Theme switching (light/dark mode).
+
+## Screenshots
+
+### Welcome Screen
+![Welcome Screen](assets/screenshots/welcome_screen.jpg)
+
+### Home Screen
+![Home Screen](assets/screenshots/home_screen.jpg)
+
+### Add Screen
+![Add Screen](assets/screenshots/add_screen.jpg)
+
+### Edit Screen
+![Edit Screen](assets/screenshots/edit_screen.jpg)
+
+### Book Detail View
+![Book Detail View](assets/screenshots/book_detail_view.jpg)
+
+### Search Screen
+![Search Screen](assets/screenshots/search_screen.jpg)
+
+### Settings View
+![Settings View](assets/screenshots/settings_view.jpg)
 
 ## Getting Started
 
