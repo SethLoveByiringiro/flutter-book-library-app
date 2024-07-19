@@ -26,6 +26,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/book_app_logo.jpg
+    - assets/screenshots/
   fonts:
     - family: Roboto
       fonts:
