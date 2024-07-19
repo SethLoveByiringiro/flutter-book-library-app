@@ -1,3 +1,6 @@
+Here's how you can integrate the screenshots section into your README file, following the structure you’ve outlined:
+
+```markdown
 # Flutter Book Library App
 
 A cross-platform mobile application developed using Flutter that allows users to manage their personal book library. The app includes features to add, edit, delete, and view books. Users can also rate books and mark them as read or unread. User preferences such as the sorting order of the book list are stored using Shared Preferences.
@@ -69,3 +72,24 @@ A cross-platform mobile application developed using Flutter that allows users to
    ```bash
    git clone https://github.com/SethLoveByiringiro/flutter-book-library-app.git
    cd flutter-book-library-app
+   ```
+
+2. **Install dependencies:**
+
+   ```bash
+   flutter pub get
+   ```
+
+3. **Run the app:**
+
+   ```bash
+   flutter run
+   ```
+
+## Contributing
+
+Feel free to contribute by opening issues or submitting pull requests. 
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
