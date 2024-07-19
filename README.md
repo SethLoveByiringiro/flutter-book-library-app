@@ -7,9 +7,13 @@ A cross-platform mobile application developed using Flutter that allows users to
 1. **UI Design:**
    - Use Flutter's Material Design widgets for a cohesive look.
    - Implement a home screen with a list of books.
+     ![Home Screen](assets/screenshots/home_screen.png)
    - Create screens for adding/editing book details.
+     ![Add/Edit Screen](assets/screenshots/add_edit_screen.png)
    - Design a book detail view.
+     ![Book Detail View](assets/screenshots/book_detail_view.png)
    - Implement a settings screen.
+     ![Settings Screen](assets/screenshots/settings_screen.png)
 
 2. **Data Persistence (SharedPreferences):**
    - Use `shared_preferences` package to store user preferences.
@@ -46,67 +50,3 @@ A cross-platform mobile application developed using Flutter that allows users to
    ```bash
    git clone https://github.com/SethLoveByiringiro/flutter-book-library-app.git
    cd flutter-book-library-app
-   ```
-
-2. **Install dependencies:**
-
-   ```bash
-   flutter pub get
-   ```
-
-3. **Run the app:**
-
-   ```bash
-   flutter run
-   ```
-
-### Project Structure
-
-- `lib/`: Main application code.
-  - `models/`: Data models.
-  - `providers/`: State management providers.
-  - `screens/`: UI screens.
-  - `widgets/`: Reusable UI components.
-- `assets/`: Application assets (images, fonts, etc.).
-- `test/`: Unit and widget tests.
-
-### Implementation Steps
-
-1. **Set up the project structure:**
-   - Organize the project into directories for models, providers, screens, and widgets.
-
-2. **Design and implement the UI components:**
-   - Home screen, add/edit book screen, book detail view, settings screen.
-
-3. **Implement data persistence for user preferences:**
-   - Use `shared_preferences` to save sorting and theme preferences.
-
-4. **Set up the local database and CRUD operations:**
-   - Use `sqflite` for local database operations.
-
-5. **Implement state management:**
-   - Use `Provider` or `Riverpod` to manage app state.
-
-6. **Add sorting and filtering functionality:**
-   - Allow users to sort books by title, author, and rating.
-
-7. **Implement search feature:**
-   - Provide a search bar to filter books by title or author.
-
-8. **Add theme switching capability:**
-   - Implement light and dark mode switching.
-
-9. **Test the application on both iOS and Android:**
-   - Ensure the app works seamlessly on both platforms.
-
-## Contributing
-
-Contributions are welcome! Please fork the repository and create a pull request with your changes.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Contact
-
-For any questions or suggestions, please contact [sethlovebyiringiro@gmail.com](mailto:sethlovebyiringiro@gmail.com).
