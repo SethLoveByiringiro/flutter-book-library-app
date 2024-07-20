@@ -84,30 +84,9 @@ class _AddEditBookScreenState extends State<AddEditBookScreen> {
                 },
               ),
               SizedBox(height: 16.0),
-              TextFormField(
-                initialValue: _rating.toString(),
-                decoration: InputDecoration(
-                  labelText: 'Rating',
-                  border: OutlineInputBorder(),
-                  hintText: 'Enter the rating (0.0 - 5.0)',
-                ),
-                keyboardType: TextInputType.numberWithOptions(decimal: true),
-                onSaved: (value) {
-                  if (value != null && value.isNotEmpty) {
-                    _rating = double.parse(value);
-                  }
-                },
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a rating';
-                  }
-                  double rating = double.tryParse(value) ?? -1;
-                  if (rating < 0 || rating > 5) {
-                    return 'Please enter a valid rating (0.0 - 5.0)';
-                  }
-                  return null;
-                },
-              ),
+              Text('Rating', style: TextStyle(fontSize: 16)),
+              SizedBox(height: 8.0),
+              _buildRatingIcons(),
               SizedBox(height: 16.0),
               CheckboxListTile(
                 title: Text('Read'),
@@ -124,7 +103,6 @@ class _AddEditBookScreenState extends State<AddEditBookScreen> {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     if (widget.book == null) {
-                      print("Attempting to add new book: $_title");
                       var newBook = Book(
                         id: 0, // Replace with appropriate logic for generating ID
                         title: _title,
@@ -134,7 +112,6 @@ class _AddEditBookScreenState extends State<AddEditBookScreen> {
                       );
                       await bookProvider.addBook(newBook);
                     } else {
-                      print("Attempting to update book: $_title");
                       var updatedBook = Book(
                         id: widget.book!.id,
                         title: _title,
@@ -148,11 +125,40 @@ class _AddEditBookScreenState extends State<AddEditBookScreen> {
                   }
                 },
                 child: Text(widget.book == null ? 'Add Book' : 'Save Changes'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  padding: EdgeInsets.symmetric(vertical: 16),
+                  textStyle: TextStyle(fontSize: 18),
+                ),
               ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  // Method to build rating icons
+  Widget _buildRatingIcons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: List.generate(5, (index) {
+        return IconButton(
+          icon: Icon(
+            _rating >= index + 1 ? Icons.star : Icons.star_border,
+            color: Colors.yellow,
+          ),
+          onPressed: () {
+            setState(() {
+              _rating = index + 1.toDouble();
+            });
+          },
+        );
+      }),
     );
   }
 
@@ -182,7 +188,6 @@ class _AddEditBookScreenState extends State<AddEditBookScreen> {
             TextButton(
               child: Text('Delete'),
               onPressed: () async {
-                // Directly use widget.book!.id assuming widget.book is not null
                 await bookProvider.deleteBook(widget.book!.id);
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();

@@ -15,7 +15,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   @override
   void initState() {
     super.initState();
-    print('WelcomeScreen initState called');
     _controller = AnimationController(
       duration: const Duration(seconds: 2),
       vsync: this,
@@ -31,37 +30,15 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   }
 
   void _navigateToHomeScreen() {
-    print('Attempting to navigate to HomeScreen');
-    try {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) {
-          print('Building HomeScreen');
-          return HomeScreen();
-        }),
-      );
-      print('Navigation to HomeScreen initiated');
-    } catch (e) {
-      print('Error navigating to HomeScreen: $e');
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text('Navigation Error'),
-          content:
-              Text('Failed to navigate to the Home Screen. Please try again.'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text('OK'),
-            ),
-          ],
-        ),
-      );
-    }
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (context) {
+        return HomeScreen();
+      }),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    print('WelcomeScreen build method called');
     return Scaffold(
       body: Stack(
         children: [
@@ -84,7 +61,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   FadeTransition(
                     opacity: _animation,
                     child: Image.asset(
-                      'assets/book_app_logo.jpg',
+                      'assets/book_app_logo.jpg', // Replace with your logo asset path
                       height: 100,
                     ),
                   ),
@@ -135,8 +112,26 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                       style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.symmetric(vertical: 16),
                         textStyle: TextStyle(fontSize: 18),
+                        backgroundColor: Colors.white,
+                        foregroundColor: Colors.blue.shade800,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
                       ),
                     ),
+                  ),
+                  SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _buildSocialButton('assets/icons/facebook.png', () {}),
+                      SizedBox(width: 20),
+                      _buildSocialButton('assets/icons/google.png', () {}),
+                      SizedBox(width: 20),
+                      _buildSocialButton('assets/icons/apple-logo.png', () {}),
+                      SizedBox(width: 20),
+                      _buildSocialButton('assets/icons/instagram.png', () {}),
+                    ],
                   ),
                 ],
               ),
@@ -157,6 +152,17 @@ class _WelcomeScreenState extends State<WelcomeScreen>
           style: TextStyle(color: Colors.white),
         ),
       ],
+    );
+  }
+
+  Widget _buildSocialButton(String assetPath, VoidCallback onPressed) {
+    return GestureDetector(
+      onTap: onPressed,
+      child: Image.asset(
+        assetPath,
+        height: 40,
+        width: 40,
+      ),
     );
   }
 }

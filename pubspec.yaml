@@ -26,7 +26,17 @@ flutter:
   uses-material-design: true
   assets:
     - assets/book_app_logo.jpg
-    - assets/screenshots/
+    - assets/screenshots/add_screen.jpg
+    - assets/screenshots/book_detail_view.jpg
+    - assets/screenshots/edit_screen.jpg
+    - assets/screenshots/home_screen.jpg
+    - assets/screenshots/search_screen.jpg
+    - assets/screenshots/settings_view.jpg
+    - assets/screenshots/welcome_screen.jpg
+    - assets/icons/apple-logo.png
+    - assets/icons/facebook.png
+    - assets/icons/google.png
+    - assets/icons/instagram.png
   fonts:
     - family: Roboto
       fonts:
