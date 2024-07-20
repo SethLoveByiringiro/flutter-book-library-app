@@ -1,6 +1,3 @@
-Here's how you can integrate the screenshots section into your README file, following the structure you’ve outlined:
-
-```markdown
 # Flutter Book Library App
 
 A cross-platform mobile application developed using Flutter that allows users to manage their personal book library. The app includes features to add, edit, delete, and view books. Users can also rate books and mark them as read or unread. User preferences such as the sorting order of the book list are stored using Shared Preferences.
