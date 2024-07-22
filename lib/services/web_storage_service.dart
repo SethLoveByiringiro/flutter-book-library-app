@@ -7,12 +7,13 @@ class WebStorageService implements StorageService {
   @override
   Future<Book> insertBook(Book book) async {
     // Ensure the book ID is unique
-    final newId = _books.isNotEmpty ? _books.last.id + 1 : 1;
+    final newId = _books.isNotEmpty ? (_books.last.id ?? 0) + 1 : 1;
     final newBook = Book(
       id: newId,
       title: book.title,
       author: book.author,
       rating: book.rating,
+      imagePath: book.imagePath, // Include the imagePath parameter
       isRead: book.isRead,
     );
     _books.add(newBook);

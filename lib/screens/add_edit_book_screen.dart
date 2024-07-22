@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:book_library_app/models/book.dart';
 import 'package:book_library_app/providers/book_provider.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class AddEditBookScreen extends StatefulWidget {
@@ -17,7 +21,9 @@ class _AddEditBookScreenState extends State<AddEditBookScreen> {
   late String _title;
   late String _author;
   late double _rating;
+  late String _imagePath;
   bool _isRead = false;
+  final ImagePicker _picker = ImagePicker();
 
   @override
   void initState() {
@@ -25,7 +31,17 @@ class _AddEditBookScreenState extends State<AddEditBookScreen> {
     _title = widget.book?.title ?? '';
     _author = widget.book?.author ?? '';
     _rating = widget.book?.rating ?? 0.0;
+    _imagePath = widget.book?.imagePath ?? '';
     _isRead = widget.book?.isRead ?? false;
+  }
+
+  Future<void> _pickImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _imagePath = pickedFile.path;
+      });
+    }
   }
 
   @override
@@ -84,6 +100,21 @@ class _AddEditBookScreenState extends State<AddEditBookScreen> {
                 },
               ),
               SizedBox(height: 16.0),
+              GestureDetector(
+                onTap: _pickImage,
+                child: Container(
+                  height: 200,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                  ),
+                  child: _imagePath.isEmpty
+                      ? Center(child: Text('Tap to select image'))
+                      : kIsWeb
+                          ? Image.network(_imagePath, fit: BoxFit.cover)
+                          : Image.file(File(_imagePath), fit: BoxFit.cover),
+                ),
+              ),
+              SizedBox(height: 16.0),
               Text('Rating', style: TextStyle(fontSize: 16)),
               SizedBox(height: 8.0),
               _buildRatingIcons(),
@@ -104,10 +135,10 @@ class _AddEditBookScreenState extends State<AddEditBookScreen> {
                     _formKey.currentState!.save();
                     if (widget.book == null) {
                       var newBook = Book(
-                        id: 0, // Replace with appropriate logic for generating ID
                         title: _title,
                         author: _author,
                         rating: _rating,
+                        imagePath: _imagePath,
                         isRead: _isRead,
                       );
                       await bookProvider.addBook(newBook);
@@ -117,6 +148,7 @@ class _AddEditBookScreenState extends State<AddEditBookScreen> {
                         title: _title,
                         author: _author,
                         rating: _rating,
+                        imagePath: _imagePath,
                         isRead: _isRead,
                       );
                       await bookProvider.updateBook(updatedBook);
@@ -154,7 +186,7 @@ class _AddEditBookScreenState extends State<AddEditBookScreen> {
           ),
           onPressed: () {
             setState(() {
-              _rating = index + 1.toDouble();
+              _rating = (index + 1).toDouble();
             });
           },
         );
@@ -188,9 +220,11 @@ class _AddEditBookScreenState extends State<AddEditBookScreen> {
             TextButton(
               child: Text('Delete'),
               onPressed: () async {
-                await bookProvider.deleteBook(widget.book!.id);
-                Navigator.of(context).pop();
-                Navigator.of(context).pop();
+                if (widget.book?.id != null) {
+                  await bookProvider.deleteBook(widget.book!.id!);
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                }
               },
             ),
           ],

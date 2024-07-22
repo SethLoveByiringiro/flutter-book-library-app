@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:book_library_app/app_state.dart';
 import 'package:book_library_app/models/book.dart';
 import 'package:book_library_app/providers/book_provider.dart';
 import 'package:book_library_app/screens/add_edit_book_screen.dart';
 import 'package:book_library_app/screens/book_detail_screen.dart';
 import 'package:book_library_app/screens/settings_screen.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -105,14 +108,82 @@ class _HomeScreenState extends State<HomeScreen> {
       itemCount: filteredBooks.length,
       itemBuilder: (context, index) {
         final book = filteredBooks[index];
-        return ListTile(
-          title: Text(book.title),
-          subtitle: Text(book.author),
-          trailing: Text('Rating: ${book.rating.toStringAsFixed(1)}'),
-          onTap: () => _navigateToBookDetails(context, book),
-          onLongPress: () => _showBookOptions(context, book),
-        );
+        return _buildBookCard(book, context);
       },
+    );
+  }
+
+  Widget _buildBookCard(Book book, BuildContext context) {
+    return GestureDetector(
+      onTap: () => _navigateToBookDetails(context, book),
+      onLongPress: () => _showBookOptions(context, book),
+      child: Card(
+        margin: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        elevation: 5,
+        child: Row(
+          children: [
+            if (book.imagePath.isNotEmpty)
+              ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: kIsWeb
+                    ? Image.network(
+                        book.imagePath,
+                        width: 100,
+                        height: 150,
+                        fit: BoxFit.cover,
+                      )
+                    : Image.file(
+                        File(book.imagePath),
+                        width: 100,
+                        height: 150,
+                        fit: BoxFit.cover,
+                      ),
+              ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      book.title,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      'by ${book.author}',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    Row(
+                      children: List.generate(5, (index) {
+                        return Icon(
+                          index < book.rating ? Icons.star : Icons.star_border,
+                          color: Colors.yellow,
+                        );
+                      }),
+                    ),
+                    Text(
+                      book.isRead ? 'Read' : 'Not read',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: book.isRead ? Colors.green : Colors.red,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -172,7 +243,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Text('Delete'),
               onPressed: () async {
                 await Provider.of<BookProvider>(context, listen: false)
-                    .deleteBook(book.id);
+                    .deleteBook(book.id!); // Use ! to assert non-nullability
                 Navigator.of(context).pop();
                 _loadBooks();
               },

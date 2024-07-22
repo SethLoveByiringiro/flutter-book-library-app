@@ -16,11 +16,16 @@ class MobileStorageService implements StorageService {
     String path = join(await getDatabasesPath(), 'books.db');
     return await openDatabase(
       path,
-      version: 1,
+      version: 2, // Increment the version
       onCreate: (db, version) {
         return db.execute(
-          'CREATE TABLE books(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, author TEXT, rating DOUBLE, isRead INTEGER)',
+          'CREATE TABLE books(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, author TEXT, rating DOUBLE, imagePath TEXT, isRead INTEGER)',
         );
+      },
+      onUpgrade: (db, oldVersion, newVersion) async {
+        if (oldVersion < 2) {
+          await db.execute('ALTER TABLE books ADD COLUMN imagePath TEXT');
+        }
       },
     );
   }
@@ -30,16 +35,21 @@ class MobileStorageService implements StorageService {
     try {
       final db = await database;
       int id = await db.insert('books', book.toMap());
-      book.id = id; // Assign the generated ID back to the book object
+      Book newBook = Book(
+        id: id,
+        title: book.title,
+        author: book.author,
+        rating: book.rating,
+        imagePath: book.imagePath,
+        isRead: book.isRead,
+      );
       print("Inserted book with ID: $id");
-      return book;
+      return newBook;
     } catch (e) {
       print("Error inserting book: $e");
-      throw e; // Rethrow the exception to handle it further up the chain
+      throw e;
     }
   }
-
-  // Implement other methods like updateBook, deleteBook, getBooks, etc.
 
   @override
   Future<Book> updateBook(Book book) async {
@@ -71,15 +81,7 @@ class MobileStorageService implements StorageService {
     final List<Map<String, dynamic>> maps = await db.query('books');
     print("Fetched ${maps.length} books from database");
 
-    return List.generate(maps.length, (i) {
-      return Book(
-        id: maps[i]['id'],
-        title: maps[i]['title'],
-        author: maps[i]['author'],
-        rating: maps[i]['rating'],
-        isRead: maps[i]['isRead'] == 1,
-      );
-    });
+    return maps.map((map) => Book.fromMap(map)).toList();
   }
 
   @override
@@ -105,15 +107,7 @@ class MobileStorageService implements StorageService {
         await db.query('books', orderBy: orderBy);
     print("Fetched ${maps.length} sorted books from database");
 
-    return List.generate(maps.length, (i) {
-      return Book(
-        id: maps[i]['id'],
-        title: maps[i]['title'],
-        author: maps[i]['author'],
-        rating: maps[i]['rating'],
-        isRead: maps[i]['isRead'] == 1,
-      );
-    });
+    return maps.map((map) => Book.fromMap(map)).toList();
   }
 
   @override
